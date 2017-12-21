@@ -1,0 +1,1 @@
+# splicemachine_ambari_service
