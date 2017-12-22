@@ -18,11 +18,10 @@
     <services>
         <service>
             <name>SPLICEMACHINE</name>
-            <displayName>Mahout</displayName>
+            <displayName>Splice Machine</displayName>
             <comment>
-                Project of the Apache Software Foundation to produce free implementations of distributed or
-                otherwise scalable machine learning algorithms focused primarily in the areas of collaborative
-                filtering, clustering and classification
+                Splice Machine OLPP is a scale-out SQL RDBMS that seemlessly performs both OLTP and OLAP
+                with machine learning and streaming.
             </comment>
             <version>1.0.0.2.3</version>
             <components>
