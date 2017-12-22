@@ -20,7 +20,6 @@ from resource_management.core.resources import Directory
 from resource_management.core.resources import File
 from resource_management.libraries.functions import format
 from resource_management.libraries.functions import is_empty
-from resource_management.libraries.functions import lzo_utils
 from resource_management.libraries.resources import XmlConfig
 
 
