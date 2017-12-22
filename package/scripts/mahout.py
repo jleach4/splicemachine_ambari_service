@@ -27,9 +27,6 @@ from resource_management.libraries.resources import XmlConfig
 def mahout():
   import params
 
-  # ensure that matching LZO libraries are installed for Mahout
-  lzo_utils.install_lzo_if_needed()
-
   Directory( params.mahout_conf_dir,
              create_parents = True,
              owner = params.mahout_user,
