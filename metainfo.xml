@@ -71,6 +71,13 @@
                 <config-type>mahout-log4j</config-type>
             </configuration-dependencies>
 
+            <quickLinksConfigurations>
+                <quickLinksConfiguration>
+                    <fileName>quicklinks.json</fileName>
+                    <default>true</default>
+                </quickLinksConfiguration>
+            </quickLinksConfigurations>
+
         </service>
     </services>
 </metainfo>
