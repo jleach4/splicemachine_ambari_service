@@ -21,11 +21,9 @@
     <services>
         <service>
             <name>SPLICEMACHINE</name>
-            <displayName>Splicemachine Instaqll</displayName>
-            <comment>A web-based notebook that enables interactive data analytics. It enables you to
-                make beautiful data-driven, interactive and collaborative documents with SQL, Scala
-                and more. This service is for &lt;b&gt;Demo purposes only&lt;/b&gt; and is &lt;b&gt;not officially supported&lt;/b&gt;
-            </comment>
+            <displayName>Splicemachine</displayName>
+            <comment>Splice Machine OLPP is a scale-out SQL RDBMS that seemlessly performs both OLTP
+            and OLAP with machine learning and streaming</comment>
             <version>2.5.0</version>
             <requiredServices>
                 <service>SPARK</service>
