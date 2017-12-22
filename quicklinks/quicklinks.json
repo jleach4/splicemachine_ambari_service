@@ -3,7 +3,7 @@
   "description": "default quick links configuration",
   "configuration": {
     "protocol": {
-      "type":"https",
+      "type":"http",
       "checks":[
       ]
     },
