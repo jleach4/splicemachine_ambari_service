@@ -5,20 +5,14 @@
     "protocol": {
       "type":"https",
       "checks":[
-        {
-          "property":"demo.use_public_git",
-          "desired":"false",
-          "site":"demo-config"
-        }
       ]
     },
     "links": [
       {
-        "name": "iotdemo_ui",
-        "label": "IotDemo UI",
+        "name": "windows_64_bit_odbc",
+        "label": "Windows 64 Bit ODBC Driver",
         "requires_user_name": "false",
-        "component_name": "IOTDEMO_MASTER",
-        "url":"%@://%@:%@/storm-demo-web-app/index.html",
+        "url":"https://s3.amazonaws.com/splice-odbc/Win64/splice_odbc_setup_64bit_2.5.45.0.msi",
         "port":{
           "http_property": "demo.port",
           "http_default_port": "8081",
