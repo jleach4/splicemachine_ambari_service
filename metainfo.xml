@@ -67,7 +67,7 @@
             </requiredServices>
 
             <configuration-dependencies>
-                <config-type>yarn-site</config-type>
+                <config-type>mahout-env</config-type>
                 <config-type>mahout-log4j</config-type>
             </configuration-dependencies>
 
