@@ -1,111 +1,72 @@
-"""
-Licensed to the Apache Software Foundation (ASF) under one
-or more contributor license agreements.  See the NOTICE file
-distributed with this work for additional information
-regarding copyright ownership.  The ASF licenses this file
-to you under the Apache License, Version 2.0 (the
-"License"); you may not use this file except in compliance
-with the License.  You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-Ambari Agent
-"""
-
-import os
-import re
+#!/usr/bin/env python
 from resource_management import *
-from resource_management.libraries.functions.default import default
-#from resource_management.libraries.functions.version import format_hdp_stack_version
-from resource_management.libraries.script.script import Script
+import os
 
 def get_port_from_url(address):
-    if not is_empty(address):
-        return address.split(':')[-1]
-    else:
-        return address
-
+  if not is_empty(address):
+    return address.split(':')[-1]
+  else:
+    return address
 
 # server configurations
 config = Script.get_config()
 
-# e.g. /var/lib/ambari-agent/cache/stacks/HDP/2.5/services/zeppelin-stack/package
-service_packagedir = os.path.realpath(__file__).split('/scripts')[0]
+stack_version_unformatted = config['hostLevelParams']['stack_version']
 
-zeppelin_dirname = 'zeppelin-server/lib'
+service_scriptsdir = os.path.realpath(__file__).split('/scripts')[0] + '/scripts/'
 
-# params from zeppelin-ambari-config
-#install_dir = config['configurations']['zeppelin-ambari-config']['zeppelin.install.dir']
-install_dir = '/usr/hdp/current'
-executor_mem = config['configurations']['zeppelin-ambari-config']['zeppelin.executor.mem']
-executor_instances = config['configurations']['zeppelin-ambari-config'][
-    'zeppelin.executor.instances']
+install_dir = config['configurations']['demo-config']['demo.install_dir']
+install_script = config['configurations']['demo-config']['demo.install_script']
+stack_log = config['configurations']['demo-config']['demo.log']
+git_username = config['configurations']['demo-config']['demo.git_username']
+git_password = config['configurations']['demo-config']['demo.git_password']
+port = str(config['configurations']['demo-config']['demo.port'])
+public_host = config['configurations']['demo-config']['demo.host_publicname']
+use_public_git = config['configurations']['demo-config']['demo.use_public_git']
 
-# disable option to build zeppelin from source for the TP
-setup_prebuilt = config['configurations']['zeppelin-ambari-config']['zeppelin.setup.prebuilt']
-# setup_prebuilt = 'true'
-
-spark_jar_dir = config['configurations']['zeppelin-ambari-config']['zeppelin.spark.jar.dir']
-spark_jar = format("{spark_jar_dir}/zeppelin-spark-0.5.5-SNAPSHOT.jar")
-setup_view = config['configurations']['zeppelin-ambari-config']['zeppelin.setup.view']
-temp_file = config['configurations']['zeppelin-ambari-config']['zeppelin.temp.file']
-spark_home = config['configurations']['zeppelin-ambari-config']['spark.home']
-zeppelin_host = config['configurations']['zeppelin-ambari-config']['zeppelin.host.publicname']
-install_python_packages = config['configurations']['zeppelin-ambari-config'][
-    'zeppelin.install_python_packages']
-
-# spark_version = str(config['configurations']['zeppelin-ambari-config']['zeppelin.spark.version'])
-fline = open(spark_home + "/RELEASE").readline().rstrip()
-spark_version = re.search('Spark (\d\.\d).+', fline).group(1)
-
-# params from zeppelin-config
-zeppelin_port = str(config['configurations']['zeppelin-config']['zeppelin.server.port'])
-
-# params from zeppelin-env
-zeppelin_user = config['configurations']['zeppelin-env']['zeppelin_user']
-zeppelin_group = config['configurations']['zeppelin-env']['zeppelin_group']
-zeppelin_log_dir = config['configurations']['zeppelin-env']['zeppelin_log_dir']
-zeppelin_pid_dir = config['configurations']['zeppelin-env']['zeppelin_pid_dir']
-zeppelin_log_file = os.path.join(zeppelin_log_dir, 'zeppelin-setup.log')
-zeppelin_hdfs_user_dir = format("/user/{zeppelin_user}")
-
-zeppelin_dir = os.path.join(*[install_dir, zeppelin_dirname])
-conf_dir = os.path.join(*[install_dir, zeppelin_dirname, 'conf'])
-notebook_dir = os.path.join(*[install_dir, zeppelin_dirname, 'notebook'])
-
-# detect configs
 master_configs = config['clusterHostInfo']
-java64_home = config['hostLevelParams']['java_home']
 ambari_host = str(master_configs['ambari_server_host'][0])
+internal_host = str(master_configs['iotdemo_master_hosts'][0])
 
-
-# detect hbase details if installed
-if 'hbase_master_hosts' in master_configs and 'hbase-site' in config['configurations']:
-    zookeeper_znode_parent = config['configurations']['hbase-site']['zookeeper.znode.parent']
-    hbase_zookeeper_quorum = config['configurations']['hbase-site']['hbase.zookeeper.quorum']
+#scripts_path = config['configurations']['demo-config']['demo.scripts_path']
+if use_public_git:
+  scripts_path = 'iot-truck-streaming'
 else:
-    zookeeper_znode_parent = None
-    hbase_zookeeper_quorum = None
+  scripts_path = 'sedev/demo-artifacts/storm_demo_2.2/storm_demo'
 
-# detect spark queue
-if 'spark.yarn.queue' in config['configurations']['spark-defaults']:
-    spark_queue = config['configurations']['spark-defaults']['spark.yarn.queue']
+#if user did not specify public hostname of demo node, proceed with internal name instead
+if public_host.strip() == '':
+  public_host = internal_host
+
+
+scripts_dir = os.path.join(install_dir, scripts_path)
+
+#read user-env.xml settings entered by user
+user_env = config['configurations']['user-env']['content']
+ambari_username = config['configurations']['user-env']['ambari_username']
+ambari_password = config['configurations']['user-env']['ambari_password']
+ambari_port = str(config['configurations']['user-env']['ambari_port'])
+
+#read cluster info - these values will be replaced added to demo-env.xml at runtime
+master_configs = config['clusterHostInfo']
+ambari_server_host = str(master_configs['ambari_server_host'][0])
+namenode_host =  str(master_configs['namenode_host'][0])
+namenode_port = get_port_from_url(config['configurations']['core-site']['fs.defaultFS']) #8020
+nimbus_host = str(master_configs['nimbus_hosts'][0])
+hive_metastore_host = str(master_configs['hive_metastore_host'][0])
+hive_metastore_port = get_port_from_url(config['configurations']['hive-site']['hive.metastore.uris']) #"9083"
+supervisor_hosts = str(', '.join(master_configs['supervisor_hosts']))
+#hbase_master_host = str(master_configs['hbase_master_hosts'][0])
+hbase_zookeeper = config['configurations']['hbase-site']['hbase.zookeeper.quorum']
+kafka_broker_host = str(master_configs['kafka_broker_hosts'][0])
+if 'port' in config['configurations']['kafka-broker']:
+  kafka_port = str(config['configurations']['kafka-broker']['port'])
 else:
-    spark_queue = 'default'
+  kafka_port = get_port_from_url(config['configurations']['kafka-broker']['listeners'])
 
-# e.g. 2.3
-stack_version_unformatted = str(config['hostLevelParams']['stack_version'])
+#activemq_host = kafka_broker_host
+activemq_host = internal_host
 
-# e.g. 2.3.0.0
-#hdp_stack_version = format_hdp_stack_version(stack_version_unformatted)
+list_of_configs = config['configurations']
 
-# e.g. 2.3.0.0-2130
-full_version = default("/commandParams/version", None)
-hdp_version = full_version
-
-# e.g. 2.3.0.0-2130
-if hasattr(functions, 'get_hdp_version'):
-    spark_client_version = functions.get_hdp_version('spark-client')
+jdk64_home=config['hostLevelParams']['java_home']
