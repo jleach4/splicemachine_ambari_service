@@ -21,7 +21,7 @@
                     </commandScript>
                     <customCommands>
                         <customCommand>
-                            <name>SOMETHINGCUSTOM</name>
+                            <name>CUSTOM_INSTALL</name>
                             <commandScript>
                                 <script>scripts/splice_install.py</script>
                                 <scriptType>PYTHON</scriptType>
