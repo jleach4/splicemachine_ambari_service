@@ -32,10 +32,10 @@ except Exception as e:
   traceback.print_exc()
   print "Failed to load parent"
 
-class SpliceMachineServiceAdvisor(service_advisor.ServiceAdvisor):
+class HDP26SPLICEMACHINEServiceAdvisor(service_advisor.ServiceAdvisor):
 
   def __init__(self, *args, **kwargs):
-    self.as_super = super(SpliceMachineServiceAdvisor, self)
+    self.as_super = super(HDP26SPLICEMACHINEServiceAdvisor, self)
     self.as_super.__init__(*args, **kwargs)
 
   def colocateService(self, hostsComponentsMap, serviceComponents):
