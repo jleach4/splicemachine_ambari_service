@@ -72,25 +72,25 @@ class HDP26SPLICEMACHINEServiceAdvisor(service_advisor.ServiceAdvisor):
         validationItems.append({"config-name": property, "item": self.getWarnItem(message)})
     return self.toConfigurationValidationProblems(validationItems, "core-site")
 
-    def getCoreSiteDesiredValues(self):
-        core_site_desired_values = {
-            "ipc.server.listen.queue.size" : "3300"
-        }
+  def getCoreSiteDesiredValues(self):
+    core_site_desired_values = {
+        "ipc.server.listen.queue.size" : "3300"
+    }
     return core_site_desired_values
 
-    def getHDFSSiteDesiredValues(self):
-        hdfs_site_desired_values = {
-            "dfs.datanode.handler.count" : "20"
-        }
-    return core_site_desired_values
+  def getHDFSSiteDesiredValues(self):
+    hdfs_site_desired_values = {
+        "dfs.datanode.handler.count" : "20"
+    }
+    return hdfs_site_desired_values
 
-    def getHBaseSiteDesiredValues(self):
-        hbase_site_desired_values = {
-            "hbase.regionserver.global.memstore.size" : "0.25",
-            "hfile.block.cache.size" : "0.25",
-            "hbase.regionserver.handler.count" : "200",
-            "hbase.client.scanner.caching" : "1000",
-            "hbase.hstore.blockingStoreFiles" : "20",
-            "hbase.hstore.compactionThreshold" : "5"
-        }
+  def getHBaseSiteDesiredValues(self):
+    hbase_site_desired_values = {
+        "hbase.regionserver.global.memstore.size" : "0.25",
+        "hfile.block.cache.size" : "0.25",
+        "hbase.regionserver.handler.count" : "200",
+        "hbase.client.scanner.caching" : "1000",
+        "hbase.hstore.blockingStoreFiles" : "20",
+        "hbase.hstore.compactionThreshold" : "5"
+    }
     return hbase_site_desired_values
