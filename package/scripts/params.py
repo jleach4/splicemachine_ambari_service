@@ -29,10 +29,10 @@ zookeeper_znode_parent = config['configurations']['hbase-site']['zookeeper.znode
 hbase_zookeeper_quorum = config['configurations']['hbase-site']['hbase.zookeeper.quorum']
 
 # detect spark queue
-if 'spark.yarn.queue' in config['configurations']['spark-defaults']:
-    spark_queue = config['configurations']['spark-defaults']['spark.yarn.queue']
-else:
-    spark_queue = 'default'
+# if 'spark.yarn.queue' in config['configurations']['spark-defaults']:
+#    spark_queue = config['configurations']['spark-defaults']['spark.yarn.queue']
+#else:
+#    spark_queue = 'default'
 
 # e.g. 2.3
 stack_version_unformatted = str(config['hostLevelParams']['stack_version'])
