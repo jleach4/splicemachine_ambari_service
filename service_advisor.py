@@ -39,6 +39,7 @@ class SpliceMachineServiceAdvisor(service_advisor.ServiceAdvisor):
     self.as_super.__init__(*args, **kwargs)
 
   def colocateService(self, hostsComponentsMap, serviceComponents):
+    pass
 
   def getServiceConfigurationRecommendations(self, configurations, clusterData, services, hosts):
 
