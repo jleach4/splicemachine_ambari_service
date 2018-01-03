@@ -6,6 +6,7 @@ import sys
 
 from resource_management.core.resources.accounts import User
 from resource_management.core.resources.system import Directory, File, Execute
+from resource_management import *
 
 reload(sys)
 sys.setdefaultencoding('utf8')
