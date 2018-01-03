@@ -3,6 +3,7 @@ import grp
 import os
 import pwd
 import sys
+import shutil
 
 from resource_management import *
 
@@ -13,10 +14,16 @@ class SpliceInstall(Script):
   def install(self, env):
     import params
     env.set_params(params)
-    Execute("echo Foo",
-        timeout=30,
-        logoutput=True)
     print 'Install the client';
+    dir = '/var/lib/splicemachine'
+    if os.path.exists(dir):
+      shutil.rmtree(dir)
+    os.makedirs(dir)
+    os.system("wget -O /var/lib/splicemachine/db-client-2.5.0.1735.jar http://repository.splicemachine.com/nexus/content/repositories/releases/com/splicemachine/db-client/2.5.0.1735/db-client-2.5.0.1735.jar")
+    os.system("wget -O /var/lib/splicemachine/db-drda-2.5.0.1735.jar http://repository.splicemachine.com/nexus/content/repositories/releases/com/splicemachine/db-drda/2.5.0.1735/db-drda-2.5.0.1735.jar")
+    os.system("wget -O /var/lib/splicemachine/db-shared-2.5.0.1735.jar http://repository.splicemachine.com/nexus/content/repositories/releases/com/splicemachine/db-shared/2.5.0.1735/db-shared-2.5.0.1735.jar")
+    os.system("wget -O /var/lib/splicemachine/db-tools-i18n-2.5.0.1735.jar http://repository.splicemachine.com/nexus/content/repositories/releases/com/splicemachine/db-tools-i18n/2.5.0.1735/db-tools-i18n-2.5.0.1735.jar")
+    os.system("wget -O /var/lib/splicemachine/db-tools-ij-2.5.0.1735.jar http://repository.splicemachine.com/nexus/content/repositories/releases/com/splicemachine/db-tools-ij/2.5.0.1735/db-tools-ij-2.5.0.1735.jar")
   def configure(self, env):
     print 'Configure the client';
   def somethingcustom(self, env):
